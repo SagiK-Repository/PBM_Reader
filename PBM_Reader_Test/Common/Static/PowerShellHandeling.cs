@@ -38,9 +38,9 @@ namespace PBM_Reader_Test.Common.Static
             outputLines.Should().NotBeNullOrEmpty();
             outputLines[0].Should().Be("Windows PowerShell");
             outputLines[1].Should().Be("Copyright (C) Microsoft Corporation. All rights reserved.");
-            outputLines[7].Should().Be("Handles");
-            outputLines[7].Should().Be("CPU(s)");
-            outputLines[7].Should().Be("ProcessName");
+            outputLines[7].Should().Contain("Handles");
+            outputLines[7].Should().Contain("CPU(s)");
+            outputLines[7].Should().Contain("ProcessName");
 
             powerShellHandling.Close();
         }
