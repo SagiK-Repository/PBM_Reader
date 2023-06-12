@@ -22,8 +22,9 @@ PowerShell 활용한 WPF MVVM PBM Reader
 
 ### 목표
 - [x] 1. 프로젝트 구성
-- [ ] 2. 기능 구성
-- [ ] 3. 
+- [x] 2. 기능 구성
+- [x] 3. 기능 설계
+- [ ] 4. 기능 구현 
 
 ### 제작자
 [@SAgiKPJH](https://github.com/SAgiKPJH)
@@ -81,6 +82,18 @@ PowerShell 활용한 WPF MVVM PBM Reader
 2. 명령어 분석 기능
 3. 표 출력 기능
 4. 편리 기능
+
+<br>
+
+# 3. 기능 설계
+### 각 기능별 이름 설계
+- Powershell와의 연동 가능 기능 : PowerShellHandeling.cs
+  - Powershell 명령어 입력 기능 : EnterCommand(string command);
+  - PowerShell 명령어 반환 기능 : List<string> EnterCommand(string command);
+  - PowerShell 명령어 주기적 반환 기능 : List<string> EnterCommand(string command, TimeSpan repeatTime);
+- 명령어 분석 기능 : TextAnalysis.cs
+  - 명령어 분리 기능 : AnalysisReturnString(string returnString);
+  - 명령어들 분리 기능 : List<string> AnalysisReturnListString(List<sting> returnListSting);
 
 
 
