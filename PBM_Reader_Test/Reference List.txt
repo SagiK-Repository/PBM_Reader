@@ -1,0 +1,4 @@
+# 참조 리스트
+
+System
+System.Core
