@@ -1,22 +1,9 @@
-﻿using System.Diagnostics;
+﻿using PBM_Reader.Common.Static;
 
-string command = "Get-Process"; // 실행할 PowerShell 명령어
+string command = "Get-Process";
+PowerShellHandling powerShellHandling = new PowerShellHandling();
 
-ProcessStartInfo psi = new ProcessStartInfo();
-psi.FileName = "powershell.exe";
-psi.Arguments = $"-Command \"{command}\"";
-psi.RedirectStandardOutput = true;
-psi.UseShellExecute = false;
+List<string> outputLines = powerShellHandling.ExecuteCommandLines(command);
 
-Process process = new Process();
-process.StartInfo = psi;
-process.Start();
-
-string output = process.StandardOutput.ReadToEnd();
-Console.WriteLine(output);
-
-process.Start();
-string output1 = process.StandardOutput.ReadToEnd();
-process.WaitForExit();
-
-Console.WriteLine(output1);
+for (int i = 0; i < outputLines.Count; i++)
+    Console.WriteLine($"[{i}] - {outputLines[i]}");

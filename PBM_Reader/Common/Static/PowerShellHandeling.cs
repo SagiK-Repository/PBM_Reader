@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace PBM_Reader.Common.Static
 {
-    using System;
-    using System.Diagnostics;
-
     public class PowerShellHandling
     {
         private Process process;
@@ -38,6 +34,23 @@ namespace PBM_Reader.Common.Static
             process.WaitForExit();
 
             return output;
+        }
+
+        public List<string> ExecuteCommandLines(string command)
+        {
+            process.StandardInput.WriteLine(command);
+            process.StandardInput.Close();
+
+            List<string> lines = new List<string>();
+            string line;
+            while ((line = process.StandardOutput.ReadLine()) != null)
+            {
+                lines.Add(line);
+            }
+
+            process.WaitForExit();
+
+            return lines;
         }
 
         public void Close()
