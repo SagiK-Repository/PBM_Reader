@@ -19,3 +19,7 @@ System.Xml.Linq
 xunit.abstractions
 xunit.core
 xunit.execution.desktop
+
+# System.Management.Automation
+
+System.Management.Automation
