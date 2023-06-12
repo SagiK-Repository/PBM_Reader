@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBM_Reader", "PBM_Reader\PB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBM_Reader_Test", "PBM_Reader_Test\PBM_Reader_Test.csproj", "{5F0CA497-65FE-486B-A0FD-523366145A40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleProject", "ConsoleProject\ConsoleProject.csproj", "{05C336D0-89ED-4BE4-92CF-DE4A893AA43B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5F0CA497-65FE-486B-A0FD-523366145A40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F0CA497-65FE-486B-A0FD-523366145A40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F0CA497-65FE-486B-A0FD-523366145A40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05C336D0-89ED-4BE4-92CF-DE4A893AA43B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05C336D0-89ED-4BE4-92CF-DE4A893AA43B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05C336D0-89ED-4BE4-92CF-DE4A893AA43B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05C336D0-89ED-4BE4-92CF-DE4A893AA43B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
