@@ -12,7 +12,3 @@ System.Xaml
 System.Xml
 System.Xml.Linq
 WindowsBase
-
-# System.Management.Automation
-
-System.Management.Automation

@@ -20,6 +20,6 @@ xunit.abstractions
 xunit.core
 xunit.execution.desktop
 
-# System.Management.Automation
+# PBM_Reader
 
-System.Management.Automation
+PBM_Reader
