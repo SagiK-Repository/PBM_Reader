@@ -21,7 +21,26 @@ PowerShell 활용한 WPF MVVM PBM Reader
 
 
 ### 목표
+- [ ] 1. 프로젝트 구성
 - [ ] ...
 
 ### 제작자
 [@SAgiKPJH](https://github.com/SAgiKPJH)
+
+<br>
+---
+<br>
+
+# 1. 프로젝트 구성
+
+- WPF 프로젝트 (.NET Framework) (v4.7)
+  - ReferenceList.txt : 참조 리스트 기록
+  - Common : 공통되는 폴더
+    - Static : 공유 폴더
+  - Model
+  - ViewModel
+  - View
+- 단위 테스트 프로젝트 (.NET Framework) (v4.7)
+  - ReferenceList.txt : 참조 리스트 기록
+  - 프로젝트와 동일한 폴더 및 파일 구조
+
