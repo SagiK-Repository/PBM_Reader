@@ -12,3 +12,7 @@ System.Xaml
 System.Xml
 System.Xml.Linq
 WindowsBase
+
+# DevExpress
+DevExpress.Xpf.Core.v22.2
+DevExpress.Xpf.Core.v22.2.Extensions
