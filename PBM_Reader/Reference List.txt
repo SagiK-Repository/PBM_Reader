@@ -16,3 +16,6 @@ WindowsBase
 # DevExpress
 DevExpress.Xpf.Core.v22.2
 DevExpress.Xpf.Core.v22.2.Extensions
+DevExpress.Xpf.Layout.v22.2.Core
+DevExpress.Xpf.LayoutControl.v22.2
+DevExpress.Xpf.Themes.Office2019Colorful.v22.2

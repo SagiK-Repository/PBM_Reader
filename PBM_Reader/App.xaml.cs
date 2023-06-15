@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using PBM_Reader.View;
+using PBM_Reader.ViewModel;
 using System.Windows;
 
 namespace PBM_Reader
@@ -13,5 +9,13 @@ namespace PBM_Reader
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            var mainViewModel = new MainViewModel();
+            var mainView = new MainView(mainViewModel);
+            mainView.Show();
+        }
     }
 }
