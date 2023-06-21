@@ -1,6 +1,11 @@
 ﻿using System;
-using System.Net.Sockets;
-using System.Text;
+using System.Threading.Tasks;
+using Akka.Actor;
+using Akka.Configuration;
+using Petabridge.Cmd.Host;
+using Petabridge.Cmd.Cluster;
+using Akka.Cluster;
+using System.Threading;
 
 namespace ConsoleTest
 {
@@ -14,25 +19,65 @@ namespace ConsoleTest
             Console.WriteLine("Enter port:");
             int port = int.Parse(Console.ReadLine());
 
-            // Petabridge 서버에 연결
-            using (TcpClient client = new TcpClient(ipAddress, port))
+            // Akka Configuration 생성
+            var config = ConfigurationFactory.ParseString($@"
+        akka {{
+            actor.provider = cluster
+            remote.dot-netty.tcp {{
+                hostname = {ipAddress}
+                port = {port}
+            }}
+        }}");
+
+            // Actor System 생성
+            var system = ActorSystem.Create("clusterSystem", config);
+
+            // Cluster Status Actor 생성
+            var clusterStatusActor = system.ActorOf(Props.Create(() => new ClusterStatusActor()), "clusterStatus");
+
+
+            // 종료 시그널 대기
+            // await system.WhenTerminated;
+
+            Thread.Sleep(10000);
+            ;
+        }
+    }
+
+    public class ClusterStatusActor : ReceiveActor
+    {
+        private readonly Cluster _cluster;
+
+        public ClusterStatusActor()
+        {
+            _cluster = Cluster.Get(Context.System);
+            _cluster.Subscribe(Self, typeof(ClusterEvent.IMemberEvent));
+
+            Receive<ClusterEvent.CurrentClusterState>(state =>
             {
-                NetworkStream stream = client.GetStream();
+                var members = state.Members;
+                Console.WriteLine($"---- Cluster Members ({members.Count}) ----");
+                foreach (var member in members)
+                {
+                    Console.WriteLine($"Address: {member.Address}, Roles: [{string.Join(",", member.Roles)}], Status: {member.Status}");
+                }
+                Console.WriteLine($"---------------------------------------");
+            });
 
-                // "cluster show" 명령어 전송
-                byte[] commandBytes = Encoding.ASCII.GetBytes("cluster show\n");
-                stream.Write(commandBytes, 0, commandBytes.Length);
+            Receive<ClusterEvent.IMemberEvent>(memberEvent =>
+            {
+                Console.WriteLine($"Member: {memberEvent.Member.Address}, Roles: [{string.Join(",", memberEvent.Member.Roles)}], Event: {memberEvent.GetType().Name}");
+            });
+        }
 
-                // 결과 수신
-                byte[] buffer = new byte[4096];
-                int bytesRead = stream.Read(buffer, 0, buffer.Length);
-                string result = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+        protected override void PreStart()
+        {
+            _cluster.Subscribe(Self, new[] { typeof(ClusterEvent.IMemberEvent) });
+        }
 
-                // 결과 출력
-                Console.WriteLine("Cluster show result:");
-                Console.WriteLine(result);
-            }
-
+        protected override void PostStop()
+        {
+            _cluster.Unsubscribe(Self);
         }
     }
 }
