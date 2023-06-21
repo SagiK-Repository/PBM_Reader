@@ -11,7 +11,7 @@ namespace ConsoleTest
 {
     internal class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.WriteLine("Enter IP address:");
             string ipAddress = Console.ReadLine();
@@ -37,7 +37,7 @@ namespace ConsoleTest
 
 
             // 종료 시그널 대기
-            // await system.WhenTerminated;
+            await system.WhenTerminated;
 
             Thread.Sleep(10000);
             ;
