@@ -1,83 +1,29 @@
-﻿using System;
+﻿using Akka.Actor;
+using Petabridge.Cmd.Common.Client;
+using Petabridge.Cmd.Remote;
+using System;
 using System.Threading.Tasks;
-using Akka.Actor;
-using Akka.Configuration;
-using Petabridge.Cmd.Host;
-using Petabridge.Cmd.Cluster;
-using Akka.Cluster;
-using System.Threading;
 
-namespace ConsoleTest
+namespace MyAkkaApp
 {
-    internal class Program
+    public static class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task Main()
         {
-            Console.WriteLine("Enter IP address:");
-            string ipAddress = Console.ReadLine();
+            var host = "127.0.0.1";
+            var port = 9100;
 
-            Console.WriteLine("Enter port:");
-            int port = int.Parse(Console.ReadLine());
+            // Create a Petabridge.Cmd client
+            var client = await PetabridgeCmdClient.CreateAsync(host, port);
 
-            // Akka Configuration 생성
-            var config = ConfigurationFactory.ParseString($@"
-        akka {{
-            actor.provider = cluster
-            remote.dot-netty.tcp {{
-                hostname = {ipAddress}
-                port = {port}
-            }}
-        }}");
+            // Send "cluster show" command to the remote server
+            var response = await client.ExecCommandAsync("cluster show");
 
-            // Actor System 생성
-            var system = ActorSystem.Create("clusterSystem", config);
+            // Display response from the remote server
+            Console.WriteLine(response);
 
-            // Cluster Status Actor 생성
-            var clusterStatusActor = system.ActorOf(Props.Create(() => new ClusterStatusActor()), "clusterStatus");
-
-
-            // 종료 시그널 대기
-            await system.WhenTerminated;
-
-            Thread.Sleep(10000);
-            ;
-        }
-    }
-
-    public class ClusterStatusActor : ReceiveActor
-    {
-        private readonly Cluster _cluster;
-
-        public ClusterStatusActor()
-        {
-            _cluster = Cluster.Get(Context.System);
-            _cluster.Subscribe(Self, typeof(ClusterEvent.IMemberEvent));
-
-            Receive<ClusterEvent.CurrentClusterState>(state =>
-            {
-                var members = state.Members;
-                Console.WriteLine($"---- Cluster Members ({members.Count}) ----");
-                foreach (var member in members)
-                {
-                    Console.WriteLine($"Address: {member.Address}, Roles: [{string.Join(",", member.Roles)}], Status: {member.Status}");
-                }
-                Console.WriteLine($"---------------------------------------");
-            });
-
-            Receive<ClusterEvent.IMemberEvent>(memberEvent =>
-            {
-                Console.WriteLine($"Member: {memberEvent.Member.Address}, Roles: [{string.Join(",", memberEvent.Member.Roles)}], Event: {memberEvent.GetType().Name}");
-            });
-        }
-
-        protected override void PreStart()
-        {
-            _cluster.Subscribe(Self, new[] { typeof(ClusterEvent.IMemberEvent) });
-        }
-
-        protected override void PostStop()
-        {
-            _cluster.Unsubscribe(Self);
+            // Shutdown the client
+            await client.ShutdownAsync();
         }
     }
 }
