@@ -1,5 +1,7 @@
 ﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm.POCO;
 using PBM_Reader.Common.Static;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -7,10 +9,6 @@ namespace PBM_Reader.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        #region Variable
-        private bool _connectCommandSwitch = false;
-        #endregion
-
         #region Property
         public string IP
         {
@@ -37,6 +35,7 @@ namespace PBM_Reader.ViewModel
 
         #region Command
         public ICommand ConnectCommand { get; private set; }
+        public ICommand StopCommand { get; private set; }
         #endregion
 
         #region Constructor & Initiallize Method
@@ -56,6 +55,7 @@ namespace PBM_Reader.ViewModel
         private void CommandInitiallize()
         {
             ConnectCommand = new DelegateCommand(_connectCommand);
+            StopCommand = new DelegateCommand(_stopCommand);
         }
         #endregion
 
@@ -63,18 +63,33 @@ namespace PBM_Reader.ViewModel
         #region Command Method
         private void _connectCommand()
         {
-            _connectCommandSwitch = !_connectCommandSwitch;
+            string commandResult = getPetabridgeStatusCommand(IP, PORT);
 
-            string firstCommand = $"pbm {IP}:{PORT}";
-            string seconedCommand = "cluster show";
+            foreach (string result in TextAnalysis.GetPBMStatusString(commandResult))
+            {
+                Text += result + "\n";
+            }
 
+            if (Text.Contains("~~~") || Text.Contains("pbm : 'pbm'"))
+                Text = ">>>>>>>>>>> Not Install PBM Now <<<<<<<<<<<<<<<<<";
+        }
+
+        private void _stopCommand()
+        {
+        }
+        #endregion
+
+        #region private Method
+        private string getPetabridgeStatusCommand(string ip, string port)
+        {
             PowerShellHandling powerShellHandling = new PowerShellHandling();
 
-            Text = powerShellHandling.ExecuteCommand(firstCommand);
-
-            // Text = powerShellHandling.ExecuteCommand(seconedCommand);
+            string command = $"pbm {ip}:{port} cluster show";
+            string result = powerShellHandling.ExecuteCommand(command);
 
             powerShellHandling.Close();
+
+            return result;
         }
         #endregion
     }

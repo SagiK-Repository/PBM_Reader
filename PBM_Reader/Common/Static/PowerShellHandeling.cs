@@ -20,6 +20,7 @@ namespace PBM_Reader.Common.Static
             psi.RedirectStandardInput = true;
             psi.RedirectStandardOutput = true;
             psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
 
             process = new Process();
             process.StartInfo = psi;

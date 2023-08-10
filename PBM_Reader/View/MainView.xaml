@@ -38,6 +38,9 @@
             <Button Content="Connect"
                     HorizontalAlignment="Right"
                     Command="{Binding ConnectCommand}"/>
+            <Button Content="Stop"
+                    HorizontalAlignment="Right"
+                    Command="{Binding StopCommand}"/>
             <dxlc:LayoutItem Label="Repeat Time"
                              Width="100"
                              InputScope="Default"
