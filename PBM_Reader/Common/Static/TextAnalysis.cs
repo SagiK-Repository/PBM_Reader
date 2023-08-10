@@ -20,10 +20,10 @@ namespace PBM_Reader.Common.Static
                 }
                 else
                 {
-                    extractedLines.Add(line);
-
                     if (line.StartsWith("Count:"))
                         break;
+
+                    extractedLines.Add(line);
                 }
 
             return extractedLines;
