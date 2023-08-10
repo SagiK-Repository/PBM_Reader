@@ -1,84 +1,21 @@
 ﻿using System;
-using Akka.Actor;
-using Akka.Cluster;
+using PBM_Reader.Common.Static;
 
-class Program
+namespace ConsoleTest
 {
-    static void Main(string[] args)
+    internal class Program
     {
-        var config = @"
-            akka {
-                actor {
-                    provider = ""Akka.Cluster.ClusterActorRefProvider, Akka.Cluster""
-                }
-                remote {
-                    log-remote-lifecycle-events = off
-                    dot-netty.tcp {
-                        hostname = ""127.0.0.1""
-                        port = 9100
-                    }
-                }
-                cluster {
-                    seed-nodes = [""akka.tcp://mls-cluster-system@127.0.0.1:9100""]
-                }
-            }";
-
-        var system = ActorSystem.Create("mls-cluster-system", config);
-        var cluster = Cluster.Get(system);
-
-        var clusterWatcher = system.ActorOf(Props.Create(() => new ClusterWatcher()));
-
-        while (true)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Press ENTER to check the cluster status or type 'exit' to leave...");
-            var input = Console.ReadLine();
-            if (input.ToLower() == "exit")
-            {
-                break;
-            }
+            string command = "pbm 127.0.0.1:9100 cluster show";
+            PowerShellHandling powerShellHandling = new PowerShellHandling();
 
-            clusterWatcher.Tell("CheckStatus");
-        }
+            string output = powerShellHandling.ExecuteCommand(command);
+            Console.WriteLine(output);
 
-        cluster.Leave(cluster.SelfAddress);
-        system.Terminate().Wait();
+            powerShellHandling.Close();
 
-
-        Console.ReadLine();
-    }
-}
-
-public class ClusterWatcher : ReceiveActor
-{
-    public ClusterWatcher()
-    {
-        var cluster = Cluster.Get(Context.System);
-
-        Receive<string>(statusCheck => statusCheck == "CheckStatus", statusCheck =>
-        {
-            Console.WriteLine("Requesting cluster status...");
-            cluster.SendCurrentClusterState(Self);
-        });
-
-        Receive<ClusterEvent.CurrentClusterState>(state =>
-        {
-            ShowClusterState(state);
-        });
-    }
-
-    private void ShowClusterState(ClusterEvent.CurrentClusterState state)
-    {
-        Console.WriteLine("Cluster state:");
-        Console.WriteLine("Members:");
-        foreach (var member in state.Members)
-        {
-            Console.WriteLine($"\t{member.Address}: {member.Status}");
-        }
-
-        Console.WriteLine("Roles:");
-        foreach (var role in state.AllRoles)
-        {
-            Console.WriteLine($"\t{role}");
+            Console.ReadLine();
         }
     }
 }
