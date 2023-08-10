@@ -13,6 +13,9 @@ namespace ConsoleTest
             string output = powerShellHandling.ExecuteCommand(command);
             Console.WriteLine(output);
 
+            if (output.Contains("~~~") || output.Contains("pbm : 'pbm'"))
+                Console.WriteLine(">>>>>>>>>>> Not Install PBM Now <<<<<<<<<<<<<<<<<");
+
             powerShellHandling.Close();
 
             Console.ReadLine();
