@@ -12,7 +12,6 @@ namespace PBM_Reader
     {
         MainViewModel mainViewModel = new MainViewModel();
 
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -23,13 +22,8 @@ namespace PBM_Reader
 
         protected override void OnExit(ExitEventArgs e)
         {
-            if (mainViewModel.IsThreadRunning == true)
-            {
-                mainViewModel.IsThreadRunning = false;
-                mainViewModel.BackgroundThread.Join(1000);
-                mainViewModel.BackgroundThread.Abort();
-            }
-            
+            mainViewModel.StopCommand.Execute(null);
+
             Environment.Exit(0);
         }
     }

@@ -10,22 +10,18 @@ namespace PBM_Reader.Common.Static
         {
             bool foundStartLine = false;
             List<string> extractedLines = new List<string>();
-            string[] lines = input.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] lines = input.Split(new[] { "\n", Environment.NewLine }, StringSplitOptions.None);
 
             foreach (string line in lines)
-                if (!foundStartLine)
-                {
-                    if (line.Contains("pbm 127.0.0.1:9100 cluster show"))
-                        foundStartLine = true;
-                }
+            {
+                if (foundStartLine && line.StartsWith("Count:"))
+                    break;
+
+                if (!foundStartLine && line.Contains("cluster show"))
+                    foundStartLine = true;
                 else
-                {
-                    if (line.StartsWith("Count:"))
-                        break;
-
                     extractedLines.Add(line);
-                }
-
+            }
             return extractedLines;
         }
 

@@ -10,8 +10,8 @@ namespace PBM_Reader.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public Thread BackgroundThread;
         public bool IsThreadRunning;
+        public Thread BackgroundThread;
 
         #region Property
         public string IP
@@ -35,11 +35,6 @@ namespace PBM_Reader.ViewModel
                     value = 100000;
                 SetProperty(() => RepeatTime, value);
             }
-        }
-        public string Text
-        {
-            get { return GetProperty(() => Text); }
-            set { SetProperty(() => Text, value); }
         }
         public ObservableCollection<AkkaStateModel> Grids { get; set; }
         #endregion
@@ -71,7 +66,6 @@ namespace PBM_Reader.ViewModel
         }
         #endregion
 
-
         #region Command Method
         private void _startCommand()
         {
@@ -90,9 +84,10 @@ namespace PBM_Reader.ViewModel
                     uiContext.Send((state) =>
                     {
                         Grids.Clear();
-                        foreach (string result in TextAnalysis.GetPBMStatusString(commandResult))
+                        var statusList = TextAnalysis.GetPBMStatusString(commandResult);
+                        foreach (string status in statusList)
                         {
-                            var split = TextAnalysis.SplitString(result, new[] { "|" });
+                            var split = TextAnalysis.SplitString(status, new[] { "|" });
                             if (split.Count < 5)
                                 Grids.Add(new AkkaStateModel(new List<string>() { "PMB의 상태를 다시 확인해주세요.", "", "ERROR", "", "" }));
                             else

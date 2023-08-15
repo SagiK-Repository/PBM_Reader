@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="Common\Static\PowerShellHandeling.cs" />
     <Compile Include="Common\Static\TextAnalysis.cs" />
+    <Compile Include="Model\AkkaStateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -105,7 +106,6 @@
     <Content Include="Reference List.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="ViewModel\" />
     <Folder Include="View\" />
   </ItemGroup>
