@@ -11,7 +11,7 @@ PowerShell 활용한 WPF MVVM PBM Reader
 - [x] 1. 프로젝트 구성
 - [x] 2. 기능 구성
 - [x] 3. 기능 설계
-- [ ] 4. 기능 구현 
+- [x] 4. 기능 구현 
 
 ### 제작자
 [@SAgiKPJH](https://github.com/SAgiKPJH)
@@ -82,7 +82,17 @@ PowerShell 활용한 WPF MVVM PBM Reader
   - 명령어 분리 기능 : AnalysisReturnString(string returnString);
   - 명령어들 분리 기능 : List<string> AnalysisReturnListString(List<sting> returnListSting);
 
+<br>
 
+# 4. 기능 구현 
+
+- powershell에서 `pbm 127.0.0.1:9100 cluster show` 명령어를 통해 cluster 상태를 획득할 수 있다는 점을 이용
+- 나타난 cmd 결과를 가공해 Grid 형태로 출력할 수 있도록 구성
+- DevExpress를 활용해 Grid를 구현
+- Thread를 활용하여 PowerShell 구동
+- 종료할 때 까지 생각하여 프로그램 리소스 분배
+- 쉬운 유지보수를 위해 MVVM 패턴 활용
+- 코드의 품질 향상을 위해 xUnit Test적용
 
 
 
